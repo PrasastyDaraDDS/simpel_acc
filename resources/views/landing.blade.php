@@ -1577,7 +1577,7 @@ landing
                     <div class="col-lg-4 mt-4">
                         <div>
                             <div>
-                                <img src="{{URL::asset('build/images/logo-light.png')}}" alt="logo light" height="17">
+                                <img src="{{URL::asset('build/images/logo-light.png')}}" alt="logo light" height="100">
                             </div>
                             <div class="mt-4 fs-13">
                                 <p>Premium Multipurpose Admin & Dashboard Template</p>
