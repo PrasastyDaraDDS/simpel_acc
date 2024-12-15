@@ -138,7 +138,7 @@ Wizard
             <div class="card-body">
                 <form action="#" class="form-steps" autocomplete="off">
                     <div class="text-center pt-3 pb-4 mb-1">
-                        <img src="{{URL::asset('build/images/logo-dark.png')}}" alt="" height="17">
+                        <img src="{{URL::asset('build/images/logo-dark.png')}}" alt="" height="100">
                     </div>
                     <div class="step-arrow-nav mb-4">
 

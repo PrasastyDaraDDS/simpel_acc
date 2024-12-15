@@ -3,7 +3,7 @@ return [
     "menu"=>"Меню",
     "dashboards"=>"Панели мониторинга",
     "analytics"=>"Аналитика",
-    "crm"=>"CRM",
+    "crm"=>"Simpel ACC",
     "ecommerce"=>"Электронная торговля",
     "crypto"=>"Крипто",
     "projects"=>"Проекты",

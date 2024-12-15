@@ -8,7 +8,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            CRM
+            Simpel ACC
         @endslot
         @slot('title')
             Deals

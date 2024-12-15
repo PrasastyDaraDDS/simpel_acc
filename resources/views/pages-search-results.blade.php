@@ -204,7 +204,7 @@
                                 <p class="text-muted mb-2">Skote is an admin dashboard template that is a beautifully
                                     crafted, clean & minimal designed admin template with Dark, Light Layouts with RTL
                                     options. You can build any type of web application like Saas based interface, eCommerce,
-                                    Crypto, CRM, CMS, Project management apps, Admin Panels, etc.</p>
+                                    Crypto, Simpel ACC, CMS, Project management apps, Admin Panels, etc.</p>
                                 <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
                                     <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>485
                                     </li>

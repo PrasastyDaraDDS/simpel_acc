@@ -35,9 +35,9 @@
                                 <div class="text-center mt-4 mb-5">
                                     <div class="py-3 px-2 d-inline-block" id="logo-tour">
                                         <img src="{{ URL::asset('build/images/logo-dark.png') }}"
-                                            class="card-logo card-logo-dark" alt="logo" height="17">
+                                            class="card-logo card-logo-dark" alt="logo" height="100">
                                         <img src="{{ URL::asset('build/images/logo-light.png') }}"
-                                            class="card-logo card-logo-light" alt="logo" height="17">
+                                            class="card-logo card-logo-light" alt="logo" height="100">
                                     </div>
                                     <h5 class="fs-16">Responsive Admin Dashboard Template</h5>
                                     <p class="text-muted">Vestibulum auctor tincidunt semper. Phasellus

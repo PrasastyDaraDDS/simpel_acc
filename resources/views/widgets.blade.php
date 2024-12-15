@@ -642,7 +642,7 @@ Widgets
         <div class="card">
             <div class="card-body">
                 <h5 class="fs-15 fw-semibold">Ecommerce App for Web</h5>
-                <p class="text-muted">CRM Project</p>
+                <p class="text-muted">Simpel ACC Project</p>
                 <div class="d-flex flex-wrap justify-content-evenly">
                     <p class="text-muted mb-0">
                         <i class="mdi mdi-numeric-10-circle text-success fs-18 align-middle me-2"></i>Completed

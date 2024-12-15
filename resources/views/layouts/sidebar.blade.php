@@ -8,7 +8,7 @@
                 <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="17">
+                <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="100">
             </span>
         </a>
         <!-- Light Logo-->
@@ -174,9 +174,9 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarCRM" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCRM">@lang('translation.crm')
+                                <a href="#sidebarSimpel ACC" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSimpel ACC">@lang('translation.crm')
                                 </a>
-                                <div class="collapse menu-dropdown" id="sidebarCRM">
+                                <div class="collapse menu-dropdown" id="sidebarSimpel ACC">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
                                             <a href="apps-crm-contacts" class="nav-link">@lang('translation.contacts')</a>

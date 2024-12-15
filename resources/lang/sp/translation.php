@@ -3,7 +3,7 @@ return [
     "menu"=>"Menú",
     "dashboards"=>"Tableros",
     "analytics"=>"Analítica",
-    "crm"=>"CRM",
+    "crm"=>"Simpel ACC",
     "ecommerce"=>"Comercio electrónico",
     "crypto"=>"Cripto",
     "projects"=>"Proyectos",

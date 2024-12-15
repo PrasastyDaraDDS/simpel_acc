@@ -3,7 +3,7 @@ return [
     "menu" => "قائمة الطعام",
     "dashboards" => "لوحات القيادة",
     "analytics" => "تحليلات",
-    "crm" => "CRM",
+    "crm" => "Simpel ACC",
     "ecommerce" => "التجارة الإلكترونية",
     "crypto" => "تشفير",
     "projects" => "المشاريع",

@@ -157,7 +157,7 @@
                                 class="ri-dashboard-2-line fs-16 align-middle text-primary me-2"></i> Dashboards
                             <div class="list-group nested-list nested-sortable">
                                 <div class="list-group-item nested-2">Analytics</div>
-                                <div class="list-group-item nested-2">CRM</div>
+                                <div class="list-group-item nested-2">Simpel ACC</div>
                             </div>
                         </div>
                         <div class="list-group-item nested-1"> <i

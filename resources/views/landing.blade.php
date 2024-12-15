@@ -16,8 +16,8 @@ landing
         <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
             <div class="container">
                 <a class="navbar-brand" href="index">
-                    <img src="{{URL::asset('build/images/logo-dark.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="17">
-                    <img src="{{URL::asset('build/images/logo-light.png')}}" class="card-logo card-logo-light" alt="logo light" height="17">
+                    <img src="{{URL::asset('build/images/logo-dark.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="100">
+                    <img src="{{URL::asset('build/images/logo-light.png')}}" class="card-logo card-logo-light" alt="logo light" height="100">
                 </a>
                 <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="mdi mdi-menu"></i>
@@ -492,7 +492,7 @@ landing
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
-                                                <h5 class="fs-14 mb-0">CRM</h5>
+                                                <h5 class="fs-14 mb-0">Simpel ACC</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -1581,7 +1581,7 @@ landing
                             </div>
                             <div class="mt-4 fs-13">
                                 <p>Premium Multipurpose Admin & Dashboard Template</p>
-                                <p class="ff-secondary">You can build any type of web application like eCommerce, CRM, CMS, Project management apps, Admin Panels, etc using Velzon.</p>
+                                <p class="ff-secondary">You can build any type of web application like eCommerce, Simpel ACC, CMS, Project management apps, Admin Panels, etc using Velzon.</p>
                             </div>
                         </div>
                     </div>

@@ -333,7 +333,7 @@
                                                     <a href="javascript: void(0);">Analytics</a>
                                                 </li>
                                                 <li>
-                                                    <a href="javascript: void(0);">CRM</a>
+                                                    <a href="javascript: void(0);">Simpel ACC</a>
                                                 </li>
                                             </ul>
                                         </div>

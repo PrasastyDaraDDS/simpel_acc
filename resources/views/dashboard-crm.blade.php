@@ -8,7 +8,7 @@
             Dashboards
         @endslot
         @slot('title')
-            CRM
+            Simpel ACC
         @endslot
     @endcomponent
     <div class="row">
