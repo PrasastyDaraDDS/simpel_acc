@@ -31,6 +31,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 
 Route::resource('participants', ParticipantController::class);
 Route::resource('participant_roles', ParticipantRoleController::class);
+Route::get('products/data', [ProductController::class, 'getProducts'])->name('products.data');
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('payments', PaymentController::class);
