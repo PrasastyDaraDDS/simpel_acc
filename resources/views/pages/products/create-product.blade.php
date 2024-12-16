@@ -193,26 +193,28 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Publish</h5>
+                        <h5 class="card-title mb-0">Product Category</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="choices-publish-status-input" class="form-label">Status</label>
-
+                            <label for="choices-publish-status-input" class="form-label">Category</label>
                             <select class="form-select" id="choices-publish-status-input" data-choices
                                 data-choices-search-false>
-                                <option value="Published" selected>Published</option>
-                                <option value="Scheduled">Scheduled</option>
-                                <option value="Draft">Draft</option>
+                                @foreach ($categories as $category)
+                                    @if ($loop->index === 0)
+                                        <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                    @else
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endif
+                                @endforeach
+
                             </select>
                         </div>
 
                         <div>
-                            <label for="choices-publish-visibility-input" class="form-label">Visibility</label>
-                            <select class="form-select" id="choices-publish-visibility-input" data-choices
+                            <label for="choices-type-visibility-input" class="form-label">Type</label>
+                            <select class="form-select" id="choices-type-visibility-input" data-choices
                                 data-choices-search-false>
-                                <option value="Public" selected>Public</option>
-                                <option value="Hidden">Hidden</option>
                             </select>
                         </div>
                     </div>
@@ -222,45 +224,21 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Publish Schedule</h5>
+                        <h5 class="card-title mb-0">Supplier</h5>
                     </div>
                     <!-- end card body -->
                     <div class="card-body">
                         <div>
-                            <label for="datepicker-publish-input" class="form-label">Publish Date & Time</label>
+                            {{-- <label for="datepicker-publish-input" class="form-label"></label> --}}
                             <input type="text" id="datepicker-publish-input" class="form-control"
                                 placeholder="Enter publish date" data-provider="flatpickr" data-date-format="d.m.y"
                                 data-enable-time>
                         </div>
                     </div>
                 </div>
-                <!-- end card -->
-
-                {{-- <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Categories</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Add
-                                New</a>Select product category</p>
-                        <select class="form-select" id="choices-category-input" name="choices-category-input"
-                            data-choices data-choices-search-false>
-                            <option value="Appliances">Appliances</option>
-                            <option value="Automotive Accessories">Automotive Accessories</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Furniture">Furniture</option>
-                            <option value="Grocery">Grocery</option>
-                            <option value="Kids">Kids</option>
-                            <option value="Watches">Watches</option>
-                        </select>
-                    </div>
-                    <!-- end card body -->
-                </div> --}}
-                <!-- end card -->
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Product Tags</h5>
+                        <h5 class="card-title mb-0">Link Product</h5>
                     </div>
                     <div class="card-body">
                         <div class="hstack gap-3 align-items-start">
@@ -269,18 +247,6 @@
                                     placeholder="Enter tags" type="text" value="Cotton" />
                             </div>
                         </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Short Description</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-2">Add short description for product</p>
-                        <textarea class="form-control" placeholder="Must enter minimum of a 100 characters" rows="3"></textarea>
                     </div>
                     <!-- end card body -->
                 </div>
@@ -314,5 +280,62 @@
                 reader.readAsDataURL(input.files[0]); // Read the file as a data URL
             }
         }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('choices-publish-status-input');
+            const typeSelect = document.getElementById('choices-type-visibility-input');
+
+            // Initialize Choices.js for the category dropdown
+            new Choices(categorySelect, {
+                searchEnabled: false,
+            });
+
+            // Initialize Choices.js for the type dropdown
+            const typeChoices = new Choices(typeSelect, {
+                searchEnabled: true, // Enable search for the type dropdown
+            });
+
+            // Fetch product types when the category changes
+            categorySelect.addEventListener('change', function() {
+                const categoryId = this.value; // Get the selected category ID
+
+                // Fetch product types based on the selected category
+                // fetch(`/api/product-categories/${categoryId}/types`) // Adjust the URL to your route
+                fetch(
+                    `http://localhost:8000/api/product_category_types/${categoryId}`) // Adjust the URL to your route
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear existing options
+                        typeSelect.innerHTML =
+                        '<option value="">Select Type</option>'; // Reset to default option
+
+                        // Populate the select with options from the fetched data
+                        data.forEach(type => {
+                            const option = document.createElement('option');
+                            option.value = type.id; // Assuming each type has an 'id' field
+                            option.textContent = type
+                            .name; // Assuming each type has a 'name' field
+                            typeSelect.appendChild(option);
+                        });
+
+                        // Update Choices.js with new options
+                        typeChoices.setChoices(data.map(type => ({
+                            value: type.id,
+                            label: type.name,
+                            selected: false,
+                            disabled: false
+                        })), 'value', 'label', false);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product types:', error);
+                    });
+            });
+
+            // Trigger change event on page load to populate types for the initially selected category
+            categorySelect.dispatchEvent(new Event('change'));
+        });
     </script>
 @endsection

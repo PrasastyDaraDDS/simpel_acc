@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductCategoryType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,8 +30,8 @@ class ProductController extends Controller
     public function create()
     {
         //
-        $products = Product::all();
-        return view('pages.products.create-product',compact('products'));
+        $categories = ProductCategory::all();
+        return view('pages.products.create-product',compact('categories'));
     }
 
     /**

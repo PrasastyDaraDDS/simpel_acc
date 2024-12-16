@@ -22,14 +22,9 @@ class Product extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function categories()
+    public function product_category_type()
     {
-        return $this->hasMany(ProductCategory::class);
-    }
-
-    public function types()
-    {
-        return $this->hasMany(ProductType::class);
+        return $this->belongsTo(ProductCategoryType::class,'product_category_type_id');
     }
     public function image(): MorphOne
     {
