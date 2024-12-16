@@ -328,7 +328,7 @@
                         <div class="row g-4">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="apps-ecommerce-add-product" class="btn btn-success" id="addproduct-btn"><i
+                                    <a href="products/create" class="btn btn-success" id="addproduct-btn"><i
                                             class="ri-add-line align-bottom me-1"></i> Add Product</a>
                                 </div>
                             </div>
@@ -370,7 +370,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <div id="selection-element">
                                     <div class="my-n1 d-flex align-items-center text-muted">
                                         Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
@@ -378,7 +378,7 @@
                                             data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <!-- end card header -->
@@ -402,19 +402,20 @@
                                                 @forelse ($products as $product)
                                                     <tr>
                                                         <th scope="row"><a href="#"
-                                                                class="fw-medium">#VZ2110</a></th>
+                                                                class="fw-medium">#{{ $product->id }}</a></th>
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="flex-shrink-0 me-3">
                                                                     <div class="avatar-sm bg-light rounded p-1">
-                                                                        <img src="{{$product->image ? 'storage/' . $product->image->url  : 'storage/images/default-case.jpg'}}" alt=""
+                                                                        <img src="{{ $product->image ? asset('storage/' . $product->image->url) : asset('storage/images/default-case.jpg') }}"
+                                                                            alt=""
                                                                             class="img-fluid d-block object-cover">
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1">
                                                                     <h5 class="fs-14 mb-1">
                                                                         <a href="apps-ecommerce-product-details"
-                                                                            class="text-dark">{{$product->name}}</a>
+                                                                            class="text-dark">{{ $product->name }}</a>
                                                                     </h5>
                                                                     {{-- <p class="text-muted mb-0">Category : <span
                                                                             class="fw-medium">row.product.category</span>
@@ -422,10 +423,66 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>Rp {{$product->buying_price}}</td>
-                                                        <td>Rp {{number_format($product->sell_price,0,',','.')}}</td>
-                                                        <td><a href="javascript:void(0);" class="link-success">View More
-                                                                <i class="ri-arrow-right-line align-middle"></i></a></td>
+                                                        <td>Rp {{ $product->buying_price }}</td>
+                                                        <td>Rp {{ number_format($product->sell_price, 0, ',', '.') }}</td>
+
+                                                        <td>
+                                                            <div class="hstack gap-3 flex-wrap">
+                                                                <a href="{{url('products/' . $product->id.'/edit')}}"
+                                                                    class="link-success fs-15"><i
+                                                                        class="ri-edit-2-line"></i></a>
+                                                                <a class="link-danger fs-15 remove-list"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#removeItemModal{{ $product->id }}"><i
+                                                                        class="ri-delete-bin-line"></i>
+                                                                    </a>
+                                                                <div id="removeItemModal{{ $product->id }}" class="modal fade zoomIn"
+                                                                    tabindex="-1" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"
+                                                                                    id="btn-close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="mt-2 text-center">
+                                                                                    <lord-icon
+                                                                                        src="https://cdn.lordicon.com/gsqxdxog.json"
+                                                                                        trigger="loop"
+                                                                                        colors="primary:#f7b84b,secondary:#f06548"
+                                                                                        style="width:100px;height:100px"></lord-icon>
+                                                                                    <div
+                                                                                        class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                                                        <h4>Delete Item ?</h4>
+                                                                                        <p class="text-muted mx-4 mb-0">Are
+                                                                                            you Sure You want to Remove this
+                                                                                            Product ?</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                                                    <button type="button"
+                                                                                        class="btn w-sm btn-light"
+                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                    <form
+                                                                                        action="{{ url('products/' . $product->id) }}"
+                                                                                        method="POST">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-danger">Delete</button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div><!-- /.modal -->
+                                                            </div>
+                                                        </td>
+
                                                     </tr>
                                                 @empty
                                                     Empty
@@ -468,31 +525,6 @@
 
 
     <!-- removeItemModal -->
-    <div id="removeItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you Sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Product ?</p>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-product">Yes, Delete It!</button>
-                    </div>
-                </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
@@ -503,124 +535,4 @@
 
     {{-- <script src="{{ URL::asset('build/js/pages/ecommerce-product-list.init.js') }}"></script> --}}
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    <script>
-        // Fetch products data from the server
-        fetch('/products/data')
-            .then(response => response.json())
-            .then(data => {
-                // Initialize Grid.js with the fetched data
-                console.log("data", data)
-                var productListAll = new gridjs.Grid({
-                    columns: [{
-                            name: '#',
-                            width: '40px',
-                            sort: {
-                                enabled: false
-                            },
-                            data: (function(row) {
-                                return gridjs.html('<div class="form-check checkbox-product-list">\
-                                    <input class="form-check-input" type="checkbox" value="' + row.id + '" id="checkbox-' +
-                                    row
-                                    .id + '">\
-                                    <label class="form-check-label" for="checkbox-' + row.id + '"></label>\
-                                  </div>');
-                            })
-                        },
-                        {
-                            name: 'Product',
-                            width: '360px',
-                            data: (function(row) {
-                                console.log("row ", row)
-                                return gridjs.html('<div class="d-flex align-items-center">' +
-                                    '<div class="flex-shrink-0 me-3">' +
-                                    '<div class="avatar-sm bg-light rounded p-1"><img src="' +
-                                    row.product.img +
-                                    '" alt="" class="img-fluid d-block"></div>' +
-                                    '</div>' +
-                                    '<div class="flex-grow-1">' +
-                                    '<h5 class="fs-14 mb-1"><a href="apps-ecommerce-product-details" class="text-dark">' +
-                                    row.name + '</a></h5>' +
-                                    '<p class="text-muted mb-0">Category : <span class="fw-medium">' +
-                                    row.product.category + '</span></p>' +
-                                    '</div>' +
-                                    '</div>');
-                            })
-                        },
-
-                        {
-                            name: 'Price',
-                            width: '101px',
-                            formatter: (function(cell) {
-                                return gridjs.html('$' + cell);
-                            })
-                        },
-                        {
-                            name: 'Orders',
-                            width: '84px',
-                        },
-                        {
-                            name: 'Rating',
-                            width: '105px',
-                            formatter: (function(cell) {
-                                return gridjs.html(
-                                    '<span class="badge bg-light text-body fs-12 fw-medium"><i class="mdi mdi-star text-warning me-1"></i>' +
-                                    cell + '</span></td>');
-                            })
-                        },
-                        {
-                            name: 'Published',
-                            width: '220px',
-                            data: (function(row) {
-                                return gridjs.html(row.published.publishDate +
-                                    '<small class="text-muted ms-1">' + row.published
-                                    .publishTime + '</small>');
-                            })
-                        },
-                        {
-                            name: "Action",
-                            width: '80px',
-                            sort: {
-                                enabled: false
-                            },
-                            formatter: (function(cell, row) {
-                                var x = new DOMParser().parseFromString(row._cells[0].data.props
-                                    .content, "text/html").body.querySelector(
-                                    ".checkbox-product-list .form-check-input").value
-                                return gridjs.html('<div class="dropdown">' +
-                                    '<button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
-                                    '<i class="ri-more-fill"></i>' +
-                                    '</button>' +
-                                    '<ul class="dropdown-menu dropdown-menu-end">' +
-                                    '<li><a class="dropdown-item" href="apps-ecommerce-product-details"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>' +
-                                    '<li><a class="dropdown-item edit-list" data-edit-id=' + x +
-                                    ' href="apps-ecommerce-add-product"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>' +
-                                    '<li class="dropdown-divider"></li>' +
-                                    '<li><a class="dropdown-item remove-list" href="#" data-id=' +
-                                    x +
-                                    ' data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete</a></li>' +
-                                    '</ul>' +
-                                    '</div>');
-                            })
-                        }
-                    ],
-                    className: {
-                        th: 'text-muted',
-                    },
-                    pagination: {
-                        limit: 10,
-                        enabled: true,
-                        server: {
-                            url: '/products/data', // URL to fetch data
-                            method: 'GET',
-                            params: {
-                                // Add any additional parameters if needed
-                            }
-                        }
-                    },
-                    sort: true,
-                    data: data.data // Use the fetched data
-                }).render(document.getElementById("table-product-list-all"));
-            })
-            .catch(error => console.error('Error fetching product data:', error));
-    </script>
 @endsection
