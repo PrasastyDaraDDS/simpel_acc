@@ -55,10 +55,13 @@
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="dashboard-analytics" class="nav-link">Item</a>
+                                <a href="{{url('products')}}" href="/products" class="nav-link">Item</a>
                             </li>
                             <li class="nav-item">
-                                <a href="dashboard-analytics" class="nav-link">Kategori</a>
+                                <a href="{{url('product_categories')}}" class="nav-link">Kategori</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{url('product_category_types')}}" class="nav-link">Tipe</a>
                             </li>
                         </ul>
                     </div>
