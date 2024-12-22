@@ -33,7 +33,7 @@
 
 
                 <!-- App Search-->
-                <form class="app-search d-none d-md-block">
+                {{-- <form class="app-search d-none d-md-block">
                     <div class="position-relative">
                         <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
                         <span class="mdi mdi-magnify search-widget-icon"></span>
@@ -116,12 +116,12 @@
                             <a href="pages-search-results" class="btn btn-primary btn-sm">View All Results <i class="ri-arrow-right-line ms-1"></i></a>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
 
             <div class="d-flex align-items-center">
 
-                <div class="dropdown d-md-none topbar-head-dropdown header-item">
+                {{-- <div class="dropdown d-md-none topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bx bx-search fs-22"></i>
                     </button>
@@ -213,9 +213,9 @@
                             <span class="align-middle">Arabic</span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="dropdown topbar-head-dropdown ms-1 header-item">
+                {{-- <div class="dropdown topbar-head-dropdown ms-1 header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-category-alt fs-22'></i>
                     </button>
@@ -435,9 +435,9 @@
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
                         <i class='bx bx-moon fs-22'></i>
                     </button>
-                </div>
+                </div> --}}
 
-                <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
+                {{-- <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-bell fs-22'></i>
                         <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
@@ -699,7 +699,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

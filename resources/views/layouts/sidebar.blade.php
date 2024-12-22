@@ -39,12 +39,12 @@
                 </li> <!-- end Dashboard Menu -->
                 <li class="menu-title"><span>Manajemen</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets">
+                    <a class="nav-link menu-link" href="{{url('orders')}}">
                         <i class="ri-shopping-basket-2-line"></i> <span>Order</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets">
+                    <a class="nav-link menu-link" href="{{url('customers')}}">
                         <i class="ri-user-3-line"></i> <span>Customer</span>
                     </a>
                 </li>
@@ -67,7 +67,7 @@
                     </div>
                 </li> <!-- end Dashboard Menu -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="widgets">
+                    <a class="nav-link menu-link" href="{{url('stores')}}">
                         <i class="ri-store-2-line"></i> <span>Toko</span>
                     </a>
                 </li>

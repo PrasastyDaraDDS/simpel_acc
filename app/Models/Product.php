@@ -10,11 +10,11 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'buying_price', 'sell_price', 'supplier_id'];
+    protected $fillable = ['name', 'buying_price', 'sell_price', 'supplier_id','link','product_category_type_id','stock'];
 
     public function supplier()
     {
-        return $this->belongsTo(Participant::class, 'supplier_id');
+        return $this->belongsTo(Participant::class, 'supplier_id','id');
     }
 
     public function orders()
