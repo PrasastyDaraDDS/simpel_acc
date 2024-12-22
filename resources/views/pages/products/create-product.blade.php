@@ -22,17 +22,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
-                            <div class="mb-3">
-                                <label class="form-label" for="product-title-input">Product Name</label>
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required>
-                                @error('name')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="product-title-input">Product Name</label>
+                            <input type="text" name="name" id="name"
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                required>
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -94,17 +92,13 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
-                                <div class="mb-3">
-                                    <label class="form-label" for="manufacturer-name-input">Manufacturer Name</label>
-                                    <input type="text" class="form-control" id="manufacturer-name-input"
-                                        placeholder="Enter manufacturer name">
-                                </div>
+
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="mb-3">
                                             <label class="form-label" for="stocks-input">Stocks</label>
-                                            <input type="text" class="form-control" id="stocks-input"
-                                                placeholder="Stocks" value="1">
+                                            <input type="number" class="form-control" id="stocks-input"
+                                                placeholder="Stocks" value="1" name="stock">
                                             <div class="invalid-feedback">Please Enter a product stocks.</div>
                                         </div>
                                     </div>
@@ -197,24 +191,18 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="choices-publish-status-input" class="form-label">Category</label>
-                            <select class="form-select" id="choices-publish-status-input" data-choices
-                                data-choices-search-false>
+                            <label for="category-select" class="form-label">Category</label>
+                            <select class="form-select" id="category-select" name="category" data-choices data-choices-search-false>
                                 @foreach ($categories as $category)
-                                    @if ($loop->index === 0)
-                                        <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                                    @else
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endif
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
-
                             </select>
                         </div>
 
                         <div>
-                            <label for="choices-type-visibility-input" class="form-label">Type</label>
-                            <select class="form-select" id="choices-type-visibility-input" data-choices
-                                data-choices-search-false>
+                            <label for="type-select" class="form-label">Type</label>
+                            <select class="form-select" id="type-select" name="product_category_type_id" data-choices data-choices-search-false>
+                                <option value="">Select Type</option>
                             </select>
                         </div>
                     </div>
@@ -229,10 +217,12 @@
                     <!-- end card body -->
                     <div class="card-body">
                         <div>
-                            {{-- <label for="datepicker-publish-input" class="form-label"></label> --}}
-                            <input type="text" id="datepicker-publish-input" class="form-control"
-                                placeholder="Enter publish date" data-provider="flatpickr" data-date-format="d.m.y"
-                                data-enable-time>
+                            <label for="store-select" class="form-label">Nama Toko</label>
+                            <select class="form-select" name="supplier_id" id="store-select" data-choices data-choices-search-false>
+                                @foreach ($stores as $store)
+                                    <option value="{{ $store->id }}">{{ $store->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -243,8 +233,14 @@
                     <div class="card-body">
                         <div class="hstack gap-3 align-items-start">
                             <div class="flex-grow-1">
-                                <input class="form-control" data-choices data-choices-multiple-remove="true"
-                                    placeholder="Enter tags" type="text" value="Cotton" />
+                                <input type="text" name="link" id="link"
+                                    class="form-control @error('link') is-invalid @enderror" placeholder="Enter link"
+                                    value="{{ old('link') }}" required>
+                                @error('link')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -285,12 +281,16 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const categorySelect = document.getElementById('choices-publish-status-input');
-            const typeSelect = document.getElementById('choices-type-visibility-input');
+            const storeSelect = document.getElementById('store-select');
+            const categorySelect = document.getElementById('category-select');
+            const typeSelect = document.getElementById('type-select');
 
             // Initialize Choices.js for the category dropdown
             new Choices(categorySelect, {
-                searchEnabled: false,
+                searchEnabled: true,
+            });
+            new Choices(storeSelect, {
+                searchEnabled: true,
             });
 
             // Initialize Choices.js for the type dropdown
@@ -305,19 +305,20 @@
                 // Fetch product types based on the selected category
                 // fetch(`/api/product-categories/${categoryId}/types`) // Adjust the URL to your route
                 fetch(
-                    `http://localhost:8000/api/product_category_types/${categoryId}`) // Adjust the URL to your route
+                        `http://localhost:8000/api/product_category_types/${categoryId}`
+                        ) // Adjust the URL to your route
                     .then(response => response.json())
                     .then(data => {
                         // Clear existing options
                         typeSelect.innerHTML =
-                        '<option value="">Select Type</option>'; // Reset to default option
+                            '<option value="">Select Type</option>'; // Reset to default option
 
                         // Populate the select with options from the fetched data
                         data.forEach(type => {
                             const option = document.createElement('option');
                             option.value = type.id; // Assuming each type has an 'id' field
                             option.textContent = type
-                            .name; // Assuming each type has a 'name' field
+                                .name; // Assuming each type has a 'name' field
                             typeSelect.appendChild(option);
                         });
 

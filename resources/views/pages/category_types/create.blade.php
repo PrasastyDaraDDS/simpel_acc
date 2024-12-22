@@ -14,7 +14,7 @@
             Create Tipe
         @endslot
     @endcomponent
-    <form id="createproduct-form" action="{{ route('product_categories.store') }}" method="POST" enctype="multipart/form-data"
+    <form id="createproduct-form" action="{{ route('product_category_types.store') }}" method="POST" enctype="multipart/form-data"
         autocomplete="off" class="needs-validation">
         @csrf
         <div class="row">

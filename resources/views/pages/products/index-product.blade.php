@@ -23,7 +23,7 @@
         </div>
     @endif
     <div class="row">
-        <div class="col-xl-3 col-lg-4">
+        {{-- <div class="col-xl-3 col-lg-4">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex mb-3">
@@ -318,10 +318,11 @@
                 </div>
             </div>
             <!-- end card -->
-        </div>
+        </div> --}}
         <!-- end col -->
 
-        <div class="col-xl-9 col-lg-8">
+        {{-- <div class="col-xl-9 col-lg-8"> --}}
+        <div class="col-xl-12">
             <div>
                 <div class="card">
                     <div class="card-header border-0">
@@ -344,7 +345,7 @@
                         </div>
                     </div>
 
-                    <div class="card-header">
+                    {{-- <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
                                 <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
@@ -363,14 +364,14 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-draft"
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="nav#productnav-draft"
                                             role="tab">
                                             Draft
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                            {{-- <div class="col-auto">
+                            <div class="col-auto">
                                 <div id="selection-element">
                                     <div class="my-n1 d-flex align-items-center text-muted">
                                         Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
@@ -378,9 +379,9 @@
                                             data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- end card header -->
                     <div class="card-body">
 

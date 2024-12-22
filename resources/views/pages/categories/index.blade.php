@@ -47,43 +47,6 @@
                         </div>
                     </div>
 
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab"
-                                            href="#productnav-all" role="tab">
-                                            All <span
-                                                class="badge badge-soft-danger align-middle rounded-pill ms-1">12</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-published"
-                                            role="tab">
-                                            Published <span
-                                                class="badge badge-soft-danger align-middle rounded-pill ms-1">5</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-draft"
-                                            role="tab">
-                                            Draft
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {{-- <div class="col-auto">
-                                <div id="selection-element">
-                                    <div class="my-n1 d-flex align-items-center text-muted">
-                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
-                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
-                                    </div>
-                                </div>
-                            </div> --}}
-                        </div>
-                    </div>
                     <!-- end card header -->
                     <div class="card-body">
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Participant;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductCategoryType;
@@ -31,7 +32,9 @@ class ProductController extends Controller
     {
         //
         $categories = ProductCategory::all();
-        return view('pages.products.create-product',compact('categories'));
+        $stores = Participant::where('participant_role_id',1)->get();
+
+        return view('pages.products.create-product',compact('categories','stores'));
     }
 
     /**
@@ -43,11 +46,15 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'buying_price' => 'required|numeric',
             'sell_price' => 'required|numeric',
+            'product_category_type_id' => 'required|numeric',
+            'supplier_id' => 'required|numeric',
+            'stock'=> 'required|numeric',
+            'link' => 'string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
         // Create the product
-        $product = Product::create($request->only('name', 'buying_price', 'sell_price'));
+        $product = Product::create($request->only('name', 'buying_price', 'sell_price','link','supplier_id','product_category_type_id','category','stock'));
 
         // Handle the image upload
         if ($request->hasFile('image')) {
@@ -119,4 +126,11 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
+
+    public function getProductById(string $id){
+        $products = Product::where('product_category_type_id',$id)->get();
+        return response()->json($products);
+    }
+
+
 }
