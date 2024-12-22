@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->integer('quantity');
             $table->dateTime('order_date');
-            $table->string('order_status');
+            $table->integer('order_status_id');
             $table->timestamps();
 
             $table->foreign('participant_id')->references('id')->on('participants')->onDelete('cascade');

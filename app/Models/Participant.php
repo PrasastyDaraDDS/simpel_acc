@@ -9,7 +9,7 @@ class Participant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address'];
+    protected $fillable = ['name', 'address','link','participant_role_id'];
 
     public function products()
     {
@@ -21,8 +21,8 @@ class Participant extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(ParticipantRole::class);
+        return $this->belongsTo(ParticipantRole::class,'participant_role_id');
     }
 }
