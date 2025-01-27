@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -20,8 +21,8 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = Product::paginate(10);
-        return view('pages.products.index-product',compact('products'));
+        $products = Product::orderBy('created_at', 'desc')->paginate(10);
+        return view('pages.products.index-product', compact('products'));
     }
 
 
@@ -32,9 +33,9 @@ class ProductController extends Controller
     {
         //
         $categories = ProductCategory::all();
-        $stores = Participant::where('participant_role_id',1)->get();
+        $stores = Participant::where('participant_role_id', 1)->get();
 
-        return view('pages.products.create-product',compact('categories','stores'));
+        return view('pages.products.create-product', compact('categories', 'stores'));
     }
 
     /**
@@ -42,19 +43,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'buying_price' => 'required|numeric',
             'sell_price' => 'required|numeric',
             'product_category_type_id' => 'required|numeric',
             'supplier_id' => 'required|numeric',
-            'stock'=> 'required|numeric',
+            'stock' => 'required|numeric',
             'link' => 'string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         // Create the product
-        $product = Product::create($request->only('name', 'buying_price', 'sell_price','link','supplier_id','product_category_type_id','category','stock'));
+        $product = Product::create($request->only('name', 'buying_price', 'sell_price', 'link', 'supplier_id', 'product_category_type_id', 'category', 'stock'));
 
         // Handle the image upload
         if ($request->hasFile('image')) {
@@ -78,7 +83,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('pages.products.edit-product', compact('product'));
+        $categories = ProductCategory::all();
+        $stores = Participant::where('participant_role_id', 1)->get();
+        return view('pages.products.edit-product', compact('product', 'categories', 'stores'));
     }
 
     /**
@@ -86,14 +93,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'buying_price' => 'required|numeric',
             'sell_price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
-        $product->update($request->except('_token','image'));
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $product->update($request->except('_token', 'image'));
 
         if ($request->hasFile('image')) {
             Storage::delete('storage/' . $product->image->url);
@@ -101,7 +112,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('images', 'public'); // Store the image in the public disk
             $product->image()->create(['url' => $imagePath]); // Create the image record
         }
-        return redirect()->route('products.index')->with('success', 'Product edited '. $product->name . ' successfully');
+        return redirect()->route('products.index')->with('success', 'Product edited ' . $product->name . ' successfully');
     }
 
     /**
@@ -127,10 +138,9 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 
-    public function getProductById(string $id){
-        $products = Product::where('product_category_type_id',$id)->get();
+    public function getProductById(string $id)
+    {
+        $products = Product::where('product_category_type_id', $id)->get();
         return response()->json($products);
     }
-
-
 }

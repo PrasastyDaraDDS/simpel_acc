@@ -26,8 +26,7 @@
                         <div class="mb-3">
                             <label class="form-label" for="product-title-input">Product Name</label>
                             <input type="text" name="name" id="name"
-                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                required>
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -111,7 +110,7 @@
                                                 <span class="input-group-text" id="product-price-addon">Rp</span>
                                                 <input type="number" name="buying_price" id="buying_price"
                                                     class="form-control @error('buying_price') is-invalid @enderror"
-                                                    placeholder="Enter price" value="{{ old('buying_price') }}" required>
+                                                    placeholder="Enter price" value="{{ old('buying_price') }}">
                                                 @error('buying_price')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -129,7 +128,7 @@
                                                 <input type="number" name="sell_price" id="sell_price"
                                                     placeholder="Enter price"
                                                     class="form-control @error('sell_price') is-invalid @enderror"
-                                                    value="{{ old('sell_price') }}" required>
+                                                    value="{{ old('sell_price') }}">
                                                 @error('sell_price')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -208,7 +207,7 @@
                             <div class="flex-grow-1">
                                 <input type="text" name="link" id="link"
                                     class="form-control @error('link') is-invalid @enderror" placeholder="Enter link"
-                                    value="{{ old('link') }}" required>
+                                    value="{{ old('link') }}">
                                 @error('link')
                                     <div class="invalid-feedback">
                                         {{ $message }}

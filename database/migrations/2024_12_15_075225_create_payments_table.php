@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->dateTime('payment_date');
-            $table->decimal('amount', 10, 2);
+            $table->integer('amount');
             $table->decimal('amount_shipping', 10, 2)->nullable();
             $table->decimal('amount_overhead', 10, 2)->nullable();
             $table->timestamps();

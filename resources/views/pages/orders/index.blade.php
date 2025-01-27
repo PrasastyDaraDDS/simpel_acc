@@ -413,6 +413,16 @@
                             </tr>
                         </thead>
                         <tbody id="productTableBody">
+                            <tfoot class="table-light">
+                                <tr>
+                                    <td colspan="3">Biaya Ongkir</td>
+                                    <td id="shipping_cost_td"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">Total</td>
+                                    <td id="total_td"></td>
+                                </tr>
+                            </tfoot>
                         </tbody>
 
                     </table>
@@ -430,6 +440,12 @@
                             </tr>
                         </thead>
                         <tbody id="paymentsTableBody">
+                            <tfoot class="table-light">
+                                <tr>
+                                    <td colspan="4">Total</td>
+                                    <td id="total_td_payment"></td>
+                                </tr>
+                            </tfoot>
                         </tbody>
                     </table>
                 </div>
@@ -468,20 +484,32 @@
     <script>
         function showDetails(order) {
             const tableBody = document.getElementById('productTableBody');
+            const shippingCostTd = document.getElementById('shipping_cost_td');
+            const totalTd = document.getElementById('total_td');
+            const totalTdPayment = document.getElementById('total_td_payment');
+            shippingCostTd.innerHTML = `Rp ${order.shipping_cost.toLocaleString('id-ID')}`;
             tableBody.innerHTML = ''; // Clear previous entries
             const orderTransactions = order.order_transactions;
-            console.log("orderTransactions:", orderTransactions);
+            const shippingCost = order.shipping_cost;
+            const total = order.total;
+            let totalPrice = 0
+            let totalPayment = 0
             orderTransactions.forEach(orderTransaction => {
+                console.log("order:", order);
                 const productTableBody = document.getElementById('productTableBody');
                 productTableBody.innerHTML += `
                 <tr>
                     <td>${orderTransaction.product.name}</td>
                     <td>${orderTransaction.quantity}</td>
                     <td>Rp ${orderTransaction.product.sell_price}</td>
-                    <td>Rp ${orderTransaction.product.sell_price * orderTransaction.quantity}</td>
+                    <td>Rp ${(orderTransaction.product.sell_price * orderTransaction.quantity).toLocaleString('id-ID')}</td>
                 </tr>
                 `;
+                totalPrice += orderTransaction.product.sell_price * orderTransaction.quantity;
             });
+            totalPrice += shippingCost;
+            totalTd.innerHTML = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+
 
 
             const paymentBody = document.getElementById('paymentsTableBody');
@@ -500,7 +528,10 @@
                     <td>Rp ${payment.amount.toLocaleString('id-ID')}</td>
                 </tr>
                 `;
+                console.log("payment:", payment);
+                totalPayment += payment.amount;
             });
+            totalTdPayment.innerHTML = `Rp ${totalPayment.toLocaleString('id-ID')}`;
         }
     </script>
     {{-- <script src="{{ URL::asset('build/js/pages/ecommerce-product-list.init.js') }}"></script> --}}

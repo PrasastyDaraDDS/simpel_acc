@@ -4,6 +4,8 @@
 @endsection
 @section('css')
     <link href="{{ URL::asset('build/libs/dropzone/dropzone.css') }}" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -14,7 +16,7 @@
             Edit Product
         @endslot
     @endcomponent
-    <form id="createproduct-form" action="{{ '/products/'.$product->id }}" method="POST" enctype="multipart/form-data"
+    <form id="createproduct-form" action="{{ '/products/' . $product->id }}" method="POST" enctype="multipart/form-data"
         autocomplete="off" class="needs-validation">
         @csrf
         @method('PUT')
@@ -26,8 +28,8 @@
                             <div class="mb-3">
                                 <label class="form-label" for="product-title-input">Product Name</label>
                                 <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $product->name) }}"
-                                    required>
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    value="{{ old('name', $product->name) }}" >
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -65,7 +67,9 @@
                                     </div>
                                     <div class="avatar-lg">
                                         <div class="avatar-title bg-light rounded">
-                                            <img src="{{asset('storage/'.$product->image->url)}}" id="product-img" class="avatar-md h-auto" />
+                                            <img src="{{ $product->image ? asset('storage/' . $product->image->url) : asset('storage/images/default-case.jpg') }}"
+                                                                            alt=""
+                                                                            class="img-fluid d-block object-cover">
                                         </div>
                                     </div>
                                     @error('image')
@@ -95,11 +99,6 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
-                                <div class="mb-3">
-                                    <label class="form-label" for="manufacturer-name-input">Manufacturer Name</label>
-                                    <input type="text" class="form-control" id="manufacturer-name-input"
-                                        placeholder="Enter manufacturer name">
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="mb-3">
@@ -116,7 +115,8 @@
                                                 <span class="input-group-text" id="product-price-addon">Rp</span>
                                                 <input type="number" name="buying_price" id="buying_price"
                                                     class="form-control @error('buying_price') is-invalid @enderror"
-                                                    placeholder="Enter price" value="{{ old('buying_price', $product->buying_price) }}" required>
+                                                    placeholder="Enter price"
+                                                    value="{{ old('buying_price', $product->buying_price) }}">
                                                 @error('buying_price')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -134,7 +134,7 @@
                                                 <input type="number" name="sell_price" id="sell_price"
                                                     placeholder="Enter price"
                                                     class="form-control @error('sell_price') is-invalid @enderror"
-                                                    value="{{ old('sell_price',$product->sell_price) }}" required>
+                                                    value="{{ old('sell_price', $product->sell_price) }}">
                                                 @error('sell_price')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -194,26 +194,25 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Publish</h5>
+                        <h5 class="card-title mb-0">Product Category</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="choices-publish-status-input" class="form-label">Status</label>
-
-                            <select class="form-select" id="choices-publish-status-input" data-choices
-                                data-choices-search-false>
-                                <option value="Published" selected>Published</option>
-                                <option value="Scheduled">Scheduled</option>
-                                <option value="Draft">Draft</option>
+                            <label for="category-select" class="form-label">Category</label>
+                            <select class="form-select" id="category-select" name="category">
+                                @foreach ($categories as $category)
+                                    @if ($category->id == $product->product_category_type->product_category_id)
+                                        <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                                    @endif
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div>
-                            <label for="choices-publish-visibility-input" class="form-label">Visibility</label>
-                            <select class="form-select" id="choices-publish-visibility-input" data-choices
-                                data-choices-search-false>
-                                <option value="Public" selected>Public</option>
-                                <option value="Hidden">Hidden</option>
+                            <label for="type-select" class="form-label">Type</label>
+                            <select class="js-example-basic-single" id="type-select" name="product_category_type_id">
+                                <option value="">Select Type</option>
                             </select>
                         </div>
                     </div>
@@ -223,41 +222,40 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Publish Schedule</h5>
+                        <h5 class="card-title mb-0">Supplier</h5>
                     </div>
                     <!-- end card body -->
                     <div class="card-body">
                         <div>
-                            <label for="datepicker-publish-input" class="form-label">Publish Date & Time</label>
-                            <input type="text" id="datepicker-publish-input" class="form-control"
-                                placeholder="Enter publish date" data-provider="flatpickr" data-date-format="d.m.y"
-                                data-enable-time>
+                            <label for="store-select" class="form-label">Nama Toko</label>
+                            <select class="js-example-basic-single" name="supplier_id">
+                                @foreach ($stores as $store)
+                                    <option value="{{ $store->id }}">{{ $store->name }}</option>
+                                    @if ($store->id == $product->supplier_id)
+                                        <option value="{{ $store->id }}" selected>{{ $store->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Product Tags</h5>
+                        <h5 class="card-title mb-0">Link Product</h5>
                     </div>
                     <div class="card-body">
                         <div class="hstack gap-3 align-items-start">
                             <div class="flex-grow-1">
-                                <input class="form-control" data-choices data-choices-multiple-remove="true"
-                                    placeholder="Enter tags" type="text" value="Cotton" />
+                                <input type="text" name="link" id="link"
+                                    class="form-control @error('link') is-invalid @enderror" placeholder="Enter link"
+                                    value="{{ old('link',$product->link)}}">
+                                @error('link')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Short Description</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-2">Add short description for product</p>
-                        <textarea class="form-control" placeholder="Must enter minimum of a 100 characters" rows="3"></textarea>
                     </div>
                     <!-- end card body -->
                 </div>
@@ -269,12 +267,14 @@
     </form>
 @endsection
 @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ URL::asset('build/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
-
     <script src="{{ URL::asset('build/libs/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/ecommerce-product-create.init.js') }}"></script>
-
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 
     <script>
         function previewImage(event) {
@@ -291,5 +291,59 @@
                 reader.readAsDataURL(input.files[0]); // Read the file as a data URL
             }
         }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script>
+        const categories = @json($categories);
+        console.log("categories", categories);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const storeSelect = document.getElementById('store-select');
+            const categorySelect = document.getElementById('category-select');
+            const typeSelect = document.getElementById('type-select');
+
+            // Fetch product types when the category changes
+            categorySelect.addEventListener('change', function() {
+                const categoryId = this.value; // Get the selected category ID
+
+                // Fetch product types based on the selected category
+                // fetch(`/api/product-categories/${categoryId}/types`) // Adjust the URL to your route
+                fetch(
+                        `http://localhost:8000/api/product_category_types/${categoryId}`
+                    ) // Adjust the URL to your route
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear existing options
+                        typeSelect.innerHTML =
+                            '<option value="">Select Type</option>'; // Reset to default option
+
+                        const selectedType = @json($product->product_category_type_id);
+                        const product = @json($product);
+                        console.log("product", product);
+
+                        // Populate the select with options from the fetched data
+                        data.forEach(type => {
+                            const option = document.createElement('option');
+                            option.value = type.id; // Assuming each type has an 'id' field
+                            option.textContent = type
+                                .name; // Assuming each type has a 'name' field
+                            if (selectedType == type.id) {
+                                option.selected = true;
+                            }
+                            typeSelect.appendChild(option);
+                        });
+
+
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product types:', error);
+                    });
+            });
+
+            // Trigger change event on page load to populate types for the initially selected category
+            categorySelect.dispatchEvent(new Event('change'));
+        });
     </script>
 @endsection
