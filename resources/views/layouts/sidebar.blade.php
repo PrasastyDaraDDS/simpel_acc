@@ -33,7 +33,7 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span>@lang('translation.menu')</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" role="button">
+                    <a class="nav-link menu-link" href="/" role="button">
                         <i class="ri-dashboard-2-line"></i> <span>Dashboard Analisis</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->

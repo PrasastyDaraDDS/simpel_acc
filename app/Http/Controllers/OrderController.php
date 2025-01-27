@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\OrderTransaction;
 use App\Models\Participant;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductCategoryType;
@@ -13,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -23,9 +26,10 @@ class OrderController extends Controller
     {
         //
         $orders = Order::paginate(10);
-        $orders_buy = Order::where('order_type', 'buy')->paginate(10);
-        $orders_sell = Order::where('order_type', 'sell')->paginate(10);
-        return view('pages.orders.index', compact('orders', 'orders_buy', 'orders_sell'));
+        $orders_buy = Order::where('order_type', 'buy')->with('order_transactions.product')->with('payments.payment_method')->paginate(10);
+        $orders_sell = Order::where('order_type', 'sell')->with('order_transactions.product')->with('payments.payment_method')->paginate(10);
+        $methods = PaymentMethod::all();
+        return view('pages.orders.index', compact('orders', 'orders_buy', 'orders_sell', 'methods'));
     }
 
 
@@ -39,25 +43,32 @@ class OrderController extends Controller
         $products = Product::all();
         $customers = Participant::where('participant_role_id', 2)->get();
         $order_statuses = OrderStatus::all();
+        $methods = PaymentMethod::all();
 
-        return view('pages.orders.create', compact('categories','products', 'customers', 'order_statuses'));
+        return view('pages.orders.create', compact('methods', 'categories', 'products', 'customers', 'order_statuses'));
     }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // dd($request);
-        // $request->validate([
-        //     'participant_id' => 'required|numeric',
-        //     'product_id' => 'required|numeric',
-        //     'quantity' => 'required|numeric',
-        //     // 'order_date' => 'required|date',
-        //     'order_status_id' => 'required|numeric',
-        // ]);
+        $validator = Validator::make($request->all(), rules: [
+            'participant_id' => 'required_if:order_type,sell|numeric',
+            'product_id' => 'required|array',
+            'quantity' => 'required|array',
+            'order_date' => 'required|date',
+            'order_status_id' => 'required|numeric',
+            'payment_date.*' => 'required|date', // Validate each payment date
+            'amount.*' => 'required|numeric', // Validate each amount
+            'payment_method_id.*' => 'required|numeric', // Validate each payment method
+        ]);
 
-        // Prepare data for the order
-        $orderData = $request->only('product_id', 'quantity', 'order_type', 'order_date', 'order_status_id');
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $orderData = $request->only('participant_id', 'order_type', 'order_date', 'order_status_id', 'shipping_cost');
 
         // Set participant_id to null if order_type is 'buy'
         if ($request->input('order_type') === 'buy') {
@@ -67,35 +78,46 @@ class OrderController extends Controller
         }
 
 
-        $product = Product::findOrFail($request->input('product_id'));
-
-        // Check if the quantity exceeds the available stock
-        if ($request->input('quantity') > $product->stock) {
-            return redirect()->back()->withErrors(['quantity' => 'Quantity cannot exceed the available stock.']);
-        }
-
         // Create the order
         $order = Order::create($orderData);
 
+        // Loop through the products and save them
+        for ($i = 0; $i < count($request->product_id); $i++) {
+            // Find the product
+            $product = Product::findOrFail($request->product_id[$i]);
+
+            // Check if the quantity exceeds the available stock
+            if ($order->order_type === 'sell') {
+                $product->stock -= $request->quantity[$i]; // Subtract the ordered quantity from the stock
+                if ($request->quantity[$i] > $product->stock) {
+                    return redirect()->back()->withErrors(['quantity' => 'Quantity cannot exceed the available stock for product: ' . $product->name]);
+                }
+            } else {
+                $product->stock += $request->quantity[$i];
+            }
+            $product->save(); // Save the updated product
+
+            // Create a new order item or whatever your logic is
+            OrderTransaction::create([
+                'order_id' => $order->id, // Assuming you have an order ID to associate with
+                'product_id' => $request->product_id[$i],
+                'quantity' => $request->quantity[$i],
+            ]);
+        }
 
         // Create multiple payments and associate them with the order
         $paymentDates = $request->input('payment_date');
         $amounts = $request->input('amount');
-        $amountShippings = $request->input('amount_shipping');
-        $amountOverheads = $request->input('amount_overhead');
+        $paymentMethods = $request->input('payment_method_id');
 
         for ($i = 0; $i < count($paymentDates); $i++) {
             // Prepare payment data
             $paymentData = [
                 'payment_date' => $paymentDates[$i],
                 'amount' => $amounts[$i],
+                'payment_method_id' => $paymentMethods[$i],
                 'order_id' => $order->id, // Add the order_id to the payment
             ];
-
-            // Set shipping and overhead amounts to null if not provided
-            $paymentData['amount_shipping'] = !empty($amountShippings[$i]) ? $amountShippings[$i] : null;
-            $paymentData['amount_overhead'] = !empty($amountOverheads[$i]) ? $amountOverheads[$i] : null;
-
             // Create the payment
             Payment::create($paymentData);
         }
@@ -117,11 +139,19 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        $order = Order::find($id);
+        $categories = ProductCategory::all();
         $products = Product::all();
         $customers = Participant::where('participant_role_id', 2)->get();
         $order_statuses = OrderStatus::all();
-        return view('pages.orders.edit', compact('order', 'products', 'customers', 'order_statuses'));
+        $methods = PaymentMethod::all();
+        $order = Order::findOrFail($id);
+
+        $order_visibility = "supplier";
+        if ($order->order_type == 'sell') {
+            $order_visibility = "customer";
+        }
+        $order_statuses = OrderStatus::where('order_visibility', 'all')->orWhere('order_visibility', $order_visibility)->get();
+        return view('pages.orders.edit', compact('methods', 'categories', 'products', 'customers', 'order_statuses', 'order', 'order_statuses'));
     }
 
     /**
@@ -161,23 +191,15 @@ class OrderController extends Controller
         // Create multiple payments and associate them with the order
         $paymentDates = $request->input('payment_date');
         $amounts = $request->input('amount');
-        $amountShippings = $request->input('amount_shipping');
-        $amountOverheads = $request->input('amount_overhead');
+        $paymentMethods = $request->input('payment_method_id');
 
         for ($i = 0; $i < count($paymentDates); $i++) {
-            // Prepare payment data
-            $paymentData = [
+            $payment = Payment::create([
                 'payment_date' => $paymentDates[$i],
                 'amount' => $amounts[$i],
-                'order_id' => $order->id, // Add the order_id to the payment
-            ];
-
-            // Set shipping and overhead amounts to null if not provided
-            $paymentData['amount_shipping'] = !empty($amountShippings[$i]) ? $amountShippings[$i] : null;
-            $paymentData['amount_overhead'] = !empty($amountOverheads[$i]) ? $amountOverheads[$i] : null;
-
-            // Create the payment
-            Payment::create($paymentData);
+                'payment_method_id' => $paymentMethods[$i],
+                'order_id' => $order->id,
+            ]);
         }
 
         return redirect()->route('orders.index')->with('success', 'Order updated successfully.');

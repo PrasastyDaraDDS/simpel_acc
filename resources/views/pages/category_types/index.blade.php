@@ -88,7 +88,7 @@
                                                                 <div class="flex-grow-1">
                                                                     <h5 class="fs-14 mb-1">
                                                                         <a href="apps-ecommerce-product-details"
-                                                                            class="text-dark">{{ $type->product->name }}</a>
+                                                                            class="text-dark">{{ $type->product_category->name }}</a>
                                                                     </h5>
                                                                 </div>
                                                             </div>

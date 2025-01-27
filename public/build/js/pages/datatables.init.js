@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
       "scrollCollapse": true,
       "paging":         false
     });
-    
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 $(document).ready(function() {
     var t = $('#add-rows').DataTable();
     var counter = 1;
- 
+
     $('#addRow').on( 'click', function () {
         t.row.add( [
             counter +'.1',
@@ -51,10 +51,10 @@ $(document).ready(function() {
             counter +'.11',
             counter +'.12'
         ] ).draw( false );
- 
+
         counter++;
     } );
- 
+
     // Automatically add a first row of data
     $('#addRow').click();
 });
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let table = new DataTable('#fixed-header', {
       "fixedHeader": true
     });
-    
-}); 
+
+});
 
 //modal data datables
 document.addEventListener('DOMContentLoaded', function () {
@@ -87,24 +87,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     tableClass: 'table'
                 } )
             }
-        }
+        },
+        "fixedHeader": true
     });
-    
-}); 
+
+});
 
 //buttons exmples
 document.addEventListener('DOMContentLoaded', function () {
-  let table = new DataTable('#buttons-datatables', {
+  let table = new DataTable('.buttons-datatables', {
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'print', 'pdf'
-        ]
+            'csv', 'excel', 'print'
+        ],
+
     });
-}); 
+});
 
 //buttons exmples
 document.addEventListener('DOMContentLoaded', function () {
   let table = new DataTable('#ajax-datatables', {
         "ajax": 'build/json/datatable.json'
     });
-}); 
+});

@@ -4,6 +4,8 @@
 @endsection
 @section('css')
     <link href="{{ URL::asset('build/libs/dropzone/dropzone.css') }}" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -142,35 +144,6 @@
                                 </div>
                                 <!-- end row -->
                             </div>
-                            <!-- end tab-pane -->
-
-                            <div class="tab-pane" id="addproduct-metadata" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="meta-title-input">Meta title</label>
-                                            <input type="text" class="form-control" placeholder="Enter meta title"
-                                                id="meta-title-input">
-                                        </div>
-                                    </div>
-                                    <!-- end col -->
-
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="meta-keywords-input">Meta Keywords</label>
-                                            <input type="text" class="form-control" placeholder="Enter meta keywords"
-                                                id="meta-keywords-input">
-                                        </div>
-                                    </div>
-                                    <!-- end col -->
-                                </div>
-                                <!-- end row -->
-
-                                <div>
-                                    <label class="form-label" for="meta-description-input">Meta Description</label>
-                                    <textarea class="form-control" id="meta-description-input" placeholder="Enter meta description" rows="3"></textarea>
-                                </div>
-                            </div>
                             <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
@@ -192,7 +165,7 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="category-select" class="form-label">Category</label>
-                            <select class="form-select" id="category-select" name="category" data-choices data-choices-search-false>
+                            <select class="form-select" id="category-select" name="category" >
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
@@ -201,7 +174,7 @@
 
                         <div>
                             <label for="type-select" class="form-label">Type</label>
-                            <select class="form-select" id="type-select" name="product_category_type_id" data-choices data-choices-search-false>
+                            <select class="js-example-basic-single" id="type-select" name="product_category_type_id">
                                 <option value="">Select Type</option>
                             </select>
                         </div>
@@ -218,7 +191,7 @@
                     <div class="card-body">
                         <div>
                             <label for="store-select" class="form-label">Nama Toko</label>
-                            <select class="form-select" name="supplier_id" id="store-select" data-choices data-choices-search-false>
+                            <select class="js-example-basic-single" name="supplier_id">
                                 @foreach ($stores as $store)
                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
                                 @endforeach
@@ -254,12 +227,14 @@
     </form>
 @endsection
 @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ URL::asset('build/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
-
     <script src="{{ URL::asset('build/libs/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/ecommerce-product-create.init.js') }}"></script>
-
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 
     <script>
         function previewImage(event) {
@@ -285,19 +260,6 @@
             const categorySelect = document.getElementById('category-select');
             const typeSelect = document.getElementById('type-select');
 
-            // Initialize Choices.js for the category dropdown
-            new Choices(categorySelect, {
-                searchEnabled: true,
-            });
-            new Choices(storeSelect, {
-                searchEnabled: true,
-            });
-
-            // Initialize Choices.js for the type dropdown
-            const typeChoices = new Choices(typeSelect, {
-                searchEnabled: true, // Enable search for the type dropdown
-            });
-
             // Fetch product types when the category changes
             categorySelect.addEventListener('change', function() {
                 const categoryId = this.value; // Get the selected category ID
@@ -306,7 +268,7 @@
                 // fetch(`/api/product-categories/${categoryId}/types`) // Adjust the URL to your route
                 fetch(
                         `http://localhost:8000/api/product_category_types/${categoryId}`
-                        ) // Adjust the URL to your route
+                    ) // Adjust the URL to your route
                     .then(response => response.json())
                     .then(data => {
                         // Clear existing options
@@ -322,13 +284,7 @@
                             typeSelect.appendChild(option);
                         });
 
-                        // Update Choices.js with new options
-                        typeChoices.setChoices(data.map(type => ({
-                            value: type.id,
-                            label: type.name,
-                            selected: false,
-                            disabled: false
-                        })), 'value', 'label', false);
+
                     })
                     .catch(error => {
                         console.error('Error fetching product types:', error);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ParticipantController;
@@ -29,20 +30,20 @@ Auth::routes();
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
     Route::resource('customers', CustomerController::class);
-        Route::resource('stores', StoreController::class);
-        Route::resource('participants', ParticipantController::class);
-        Route::resource('participant_roles', ParticipantRoleController::class);
-        Route::resource('products', ProductController::class);
-        Route::resource('orders', OrderController::class);
-        Route::resource('payments', PaymentController::class);
-        Route::resource('reseller_orders', ResellerOrderController::class);
-        Route::resource('product_categories', ProductCategoryController::class);
-        Route::resource('product_category_types', ProductCategoryTypeController::class);
-        Route::resource('order_statuses', OrderStatusController::class);
+    Route::resource('stores', StoreController::class);
+    Route::resource('participants', ParticipantController::class);
+    Route::resource('participant_roles', ParticipantRoleController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('payments', PaymentController::class);
+    Route::resource('reseller_orders', ResellerOrderController::class);
+    Route::resource('product_categories', ProductCategoryController::class);
+    Route::resource('product_category_types', ProductCategoryTypeController::class);
+    Route::resource('order_statuses', OrderStatusController::class);
 });
 
 Route::get('api/product_category_types/{category}', [ProductCategoryTypeController::class, 'showType']);

@@ -1396,77 +1396,332 @@ if (chartSunburstColors) {
     var myChart = echarts.init(chartDom);
     var option;
 
-    var data = [{
-            name: 'Grandpa',
-            children: [{
-                    name: 'Uncle Leo',
-                    value: 15,
-                    children: [{
-                            name: 'Cousin Jack',
-                            value: 2
-                        },
-                        {
-                            name: 'Cousin Mary',
-                            value: 5,
-                            children: [{
-                                name: 'Jackson',
-                                value: 2
-                            }]
-                        },
-                        {
-                            name: 'Cousin Ben',
-                            value: 4
-                        }
-                    ]
+    var data = [
+
+        {
+          name: 'Roasted',
+          itemStyle: {
+            color: '#c94930'
+          },
+          children: [
+            {
+              name: 'Pipe Tobacco',
+              value: 1,
+              itemStyle: {
+                color: '#caa465'
+              }
+            },
+            {
+              name: 'Tobacco',
+              value: 1,
+              itemStyle: {
+                color: '#dfbd7e'
+              }
+            },
+            {
+              name: 'Burnt',
+              itemStyle: {
+                color: '#be8663'
+              },
+              children: [
+                {
+                  name: 'Acrid',
+                  value: 1,
+                  itemStyle: {
+                    color: '#b9a449'
+                  }
                 },
                 {
-                    name: 'Father',
-                    value: 10,
-                    children: [{
-                            name: 'Me',
-                            value: 5
-                        },
-                        {
-                            name: 'Brother Peter',
-                            value: 1
-                        }
-                    ]
+                  name: 'Ashy',
+                  value: 1,
+                  itemStyle: {
+                    color: '#899893'
+                  }
+                },
+                {
+                  name: 'Smoky',
+                  value: 1,
+                  itemStyle: {
+                    color: '#a1743b'
+                  }
+                },
+                {
+                  name: 'Brown, Roast',
+                  value: 1,
+                  itemStyle: {
+                    color: '#894810'
+                  }
                 }
-            ]
+              ]
+            },
+            {
+              name: 'Cereal',
+              itemStyle: {
+                color: '#ddaf61'
+              },
+              children: [
+                {
+                  name: 'Grain',
+                  value: 1,
+                  itemStyle: {
+                    color: '#b7906f'
+                  }
+                },
+                {
+                  name: 'Malt',
+                  value: 1,
+                  itemStyle: {
+                    color: '#eb9d5f'
+                  }
+                }
+              ]
+            }
+          ]
         },
         {
-            name: 'Nancy',
-            children: [{
-                name: 'Uncle Nike',
-                children: [{
-                        name: 'Cousin Betty',
-                        value: 1
-                    },
-                    {
-                        name: 'Cousin Jenny',
-                        value: 2
-                    }
-                ]
-            }]
-        }
-    ];
-    option = {
-        color: chartSunburstColors,
-        series: {
-            type: 'sunburst',
-            // emphasis: {
-            //     focus: 'ancestor'
-            // },
-            data: data,
-            radius: [0, '90%'],
-            label: {
-                rotate: 'radial'
+          name: 'Spices',
+          itemStyle: {
+            color: '#ad213e'
+          },
+          children: [
+            {
+              name: 'Pungent',
+              value: 1,
+              itemStyle: {
+                color: '#794752'
+              }
+            },
+            {
+              name: 'Pepper',
+              value: 1,
+              itemStyle: {
+                color: '#cc3d41'
+              }
+            },
+            {
+              name: 'Brown Spice',
+              itemStyle: {
+                color: '#b14d57'
+              },
+              children: [
+                {
+                  name: 'Anise',
+                  value: 1,
+                  itemStyle: {
+                    color: '#c78936'
+                  }
+                },
+                {
+                  name: 'Nutmeg',
+                  value: 1,
+                  itemStyle: {
+                    color: '#8c292c'
+                  }
+                },
+                {
+                  name: 'Cinnamon',
+                  value: 1,
+                  itemStyle: {
+                    color: '#e5762e'
+                  }
+                },
+                {
+                  name: 'Clove',
+                  value: 1,
+                  itemStyle: {
+                    color: '#a16c5a'
+                  }
+                }
+              ]
             }
+          ]
         },
-        textStyle: {
-            fontFamily: 'Poppins, sans-serif'
+        {
+          name: 'Nutty/\nCocoa',
+          itemStyle: {
+            color: '#a87b64'
+          },
+          children: [
+            {
+              name: 'Nutty',
+              itemStyle: {
+                color: '#c78869'
+              },
+              children: [
+                {
+                  name: 'Peanuts',
+                  value: 1,
+                  itemStyle: {
+                    color: '#d4ad12'
+                  }
+                },
+                {
+                  name: 'Hazelnut',
+                  value: 1,
+                  itemStyle: {
+                    color: '#9d5433'
+                  }
+                },
+                {
+                  name: 'Almond',
+                  value: 1,
+                  itemStyle: {
+                    color: '#c89f83'
+                  }
+                }
+              ]
+            },
+            {
+              name: 'Cocoa',
+              itemStyle: {
+                color: '#bb764c'
+              },
+              children: [
+                {
+                  name: 'Chocolate',
+                  value: 1,
+                  itemStyle: {
+                    color: '#692a19'
+                  }
+                },
+                {
+                  name: 'Dark Chocolate',
+                  value: 1,
+                  itemStyle: {
+                    color: '#470604'
+                  }
+                }
+              ]
+            }
+          ]
         },
-    };
+        {
+          name: 'Sweet',
+          itemStyle: {
+            color: '#e65832'
+          },
+          children: [
+            {
+              name: 'Brown Sugar',
+              itemStyle: {
+                color: '#d45a59'
+              },
+              children: [
+                {
+                  name: 'Molasses',
+                  value: 1,
+                  itemStyle: {
+                    color: '#310d0f'
+                  }
+                },
+                {
+                  name: 'Maple Syrup',
+                  value: 1,
+                  itemStyle: {
+                    color: '#ae341f'
+                  }
+                },
+                {
+                  name: 'Caramelized',
+                  value: 1,
+                  itemStyle: {
+                    color: '#d78823'
+                  }
+                },
+                {
+                  name: 'Honey',
+                  value: 1,
+                  itemStyle: {
+                    color: '#da5c1f'
+                  }
+                }
+              ]
+            },
+            {
+              name: 'Vanilla',
+              value: 1,
+              itemStyle: {
+                color: '#f89a80'
+              }
+            },
+            {
+              name: 'Vanillin',
+              value: 1,
+              itemStyle: {
+                color: '#f37674'
+              }
+            },
+            {
+              name: 'Overall Sweet',
+              value: 1,
+              itemStyle: {
+                color: '#e75b68'
+              }
+            },
+            {
+              name: 'Sweet Aromatics',
+              value: 1,
+              itemStyle: {
+                color: '#d0545f'
+              }
+            }
+          ]
+        }
+      ];
+      option = {
+        title: {
+          textStyle: {
+            fontSize: 14,
+            align: 'center'
+          },
+          subtextStyle: {
+            align: 'center'
+          },
+          sublink: 'https://worldcoffeeresearch.org/work/sensory-lexicon/'
+        },
+        series: {
+          type: 'sunburst',
+          data: data,
+          radius: [0, '95%'],
+          sort: undefined,
+          emphasis: {
+            focus: 'ancestor'
+          },
+          levels: [
+            {},
+            {
+              r0: '15%',
+              r: '35%',
+              itemStyle: {
+                borderWidth: 2
+              },
+              label: {
+                rotate: 'tangential'
+              }
+            },
+            {
+              r0: '35%',
+              r: '70%',
+              label: {
+                align: 'right'
+              }
+            },
+            {
+              r0: '70%',
+              r: '72%',
+              label: {
+                position: 'outside',
+                padding: 3,
+                silent: false
+              },
+              itemStyle: {
+                borderWidth: 3
+              }
+            }
+          ]
+        }
+      };
+
 
     option && myChart.setOption(option);
 }
